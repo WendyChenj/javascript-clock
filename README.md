@@ -4,7 +4,7 @@ Project 5 from freeCodeCamp.
 
 This project is built using React, HTML & CSS.
 
-# Project Objectives:
+### Project Objectives:
 
 Given basic HTML and CSS files, use front end library React to create a javascript clock timer which shows session and break time left and "beep" when time is up.
 
@@ -15,3 +15,6 @@ Given basic HTML and CSS files, use front end library React to create a javascri
 3. The session/ break length is set between 1 and 60.
 
 4. Click the reset button, the session/ break length and timer will be set to the initialized state. The sound will stop playing and be rewound to the beginning.
+
+### DEMO
+See it live: https://wendychenj.github.io/javascript-clock/
