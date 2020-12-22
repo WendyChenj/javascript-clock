@@ -1,38 +1,95 @@
 .App {
   text-align: center;
+  background-color: #457b9d;
+  width: 100%;
+  height: 100vh;
+  position: relative;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+p {
+  font-size: 1.25rem;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.main-container {
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translateX(-50%);
+  text-align: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.setting-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.break-setting,
+.session-setting {
+  margin: 0 32px;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: left;
+}
+
+button#break-decrement,
+button#session-decrement,
+button#break-increment,
+button#session-increment {
+  width: 120px;
+  padding: 8px 0;
+  background-color: #f4a261;
+  color: white;
+  font-weight: 600;
+  font-size: 1.25rem;
+  border: none;
+}
+
+button#break-decrement:hover,
+button#session-decrement:hover,
+button#break-increment:hover,
+button#session-increment:hover {
+  background-color: #e76f51;
+  cursor: pointer;
+}
+
+.timer-wrapper {
+  margin-top: 32px;
+  margin-left: 110px;
+  border: 1px solid #f1faee;
+  width: 150px;
+  height: 150px;
+  border-radius: 150px;
+  background-color: #f1faee;
+}
+
+div#timer-label {
+  margin-top: 40px;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+div#time-left {
+  margin-top: 16px;
+  font-size: 1.25rem;
+}
+
+.button-groups {
+  margin-top: 16px;
+}
+
+button#start_stop,
+button#reset {
+  width: 120px;
+  background-color: #1d3557;
+  padding: 8px 16px;
+  margin: 16px 32px;
+  border: none;
+  color: white;
+}
+
+button#start_stop:hover,
+button#reset:hover {
+  background-color: #14213d;
+  cursor: pointer;
 }

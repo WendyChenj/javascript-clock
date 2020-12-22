@@ -11,29 +11,41 @@ function App() {
   const [ timer, setTimer ] = React.useState(initialTimer);
   const [ isStart, setIsStart ] = React.useState(false);
   const [ isSession, setIsSession ] = React.useState(true);
+  const [ timeOutId, setTimeOutId ] = React.useState(null);
 
   React.useEffect(() => {
-    if (isStart) {
-      setTimeout(startCountDown, 1000);
+    if (isStart === true) {
+      const id = setTimeout(startCountDown, 1000, timer);
+      setTimeOutId(id);
+    } else {
+      if(timeOutId) {
+        clearTimeout(timeOutId);
+        setTimeOutId(null);
+      }
     }
-  });
+    if (timer === 0) {
+      document.getElementById("beep").play();
+    }
+  }, [timer, isStart]);
 
   const handleIncrement = (event,type) => {
     event.preventDefault();
     if (!isStart) {
       switch (type) {
         case "break":
-          let newBreakValue = breakValue + 1;
-          setBreakValue(newBreakValue);
-          if (isSession === false) {
-            setTimer(newBreakValue * 60);
-          }
+          if (breakValue < 60) {
+            setBreakValue(breakValue + 1);
+            if (isSession === false) {
+              setTimer((breakValue + 1) * 60);
+            }
+          }         
           break;
         case "session":
-          let newSessionValue = sessionValue + 1;
-          setSessionValue(newSessionValue);
-          if (isSession === true) {
-            setTimer(newSessionValue * 60);
+          if (sessionValue < 60) {
+            setSessionValue(sessionValue + 1);
+            if (isSession === true) {
+              setTimer((sessionValue + 1) * 60);
+            }
           }
           break;
         default:
@@ -80,9 +92,11 @@ function App() {
     setTimer(initialTimer);
     setIsStart(false);
     setIsSession(true);
+    document.getElementById("beep").pause();
+    document.getElementById("beep").currentTime = 0;
   }
 
-  const startCountDown = () => {
+  const startCountDown = (timer) => {
     if (timer === 0) {
       let newIsSession = !isSession;
       let newTimer = null;
@@ -94,12 +108,13 @@ function App() {
       setTimer(newTimer);
       setIsSession(newIsSession);
     } else {
-      console.log("executing");
       setTimer(timer - 1);
     }
   }
 
-  const timerFormat = (minutes, seconds) => {
+  const timerFormat = (timer) => {
+    const minutes = parseInt(timer / 60);
+    const seconds = parseInt(timer % 60);
     let correctTimer = null;
     if (minutes < 10 & seconds < 10) {
       correctTimer = `0${minutes}:0${seconds}`;
@@ -115,71 +130,75 @@ function App() {
 
   return (
     <div className="App">
-      {/* When a session reaches 00:00, a new break countdown begins, display a string indicating a session has begun */}
-      <div className="break-setting">
-        <div id="break-label">
-          Break Length
+      <div className="main-container">
+        <div className="setting-wrapper">
+          <div className="break-setting">
+            <p id="break-label">Break Length</p>
+            <button 
+              id="break-decrement"
+              onClick={e => handleDecrement(e, "break")}
+            >
+              -
+            </button>
+            <p id="break-length">{breakValue}</p>
+            <button 
+              id="break-increment" 
+              onClick={e => handleIncrement(e, "break")}
+            >
+              +
+            </button>
+          </div>
+
+          <div className="session-setting">
+            <p id="session-label">Session Length</p>
+
+            <button 
+              id="session-decrement"
+              onClick={e => handleDecrement(e, "session")}
+            >
+              -
+            </button>
+            <p id="session-length">{sessionValue}</p>
+            <button 
+              id="session-increment" 
+              onClick={e => handleIncrement(e, "session")}
+            >
+              +
+            </button>
+          </div>
         </div>
-        <button 
-          id="break-decrement"
-          onClick={e => handleDecrement(e, "break")}
-        >
-          -
-        </button>
-        <p id="break-length">{breakValue}</p>
-        <button 
-          id="break-increment" 
-          onClick={e => handleIncrement(e, "break")}
-        >
-          +
-        </button>
-      </div>
 
-      <div className="session-setting">
-        <div id="session-label">
-          Session Length
+        <div className="timer-wrapper">
+          <div id="timer-label">
+            {isSession ? "Session": "Break"}
+          </div>
+
+          <div id="time-left">
+            {timerFormat(timer)}
+          </div>
         </div>
-      
-        <button 
-          id="session-decrement"
-          onClick={e => handleDecrement(e, "session")}
-        >
-          -
-        </button>
-        <p id="session-length">{sessionValue}</p>
-        <button 
-          id="session-increment" 
-          onClick={e => handleIncrement(e, "session")}
-        >
-          +
-        </button>
-      </div>
 
-      {/* indicate the session is initialized  */}
-      <div id="timer-label">
-        {isSession ? "Session": "Break"}
-      </div>
+        <div className="button-groups">
+          <button 
+            id="start_stop" 
+            onClick = {handleStartOrStop}
+          >
+            {isStart ? "STOP" : "START"}
+          </button>
 
-      {/* Paused or running: should always be displayed in mm:ss format */}
-      {/* if the timer is running, display the remaining time (decrementing by a value of 1 and updating the display every 1000ms) */}
-      <div id="time-left">
-        {timerFormat(parseInt(timer/60), timer%60)}
-      </div>
+          <button
+            id="reset"
+            onClick={handleReset}
+          >
+            RESET
+          </button>
+        </div>
 
-      <button 
-        id="start-stop" 
-        onClick = {handleStartOrStop}
-      >
-        {isStart ? "STOP" : "START"}
-      </button>
-
-      <button
-        id="reset"
-        onClick={handleReset}
-      >
-        reset
-      </button>
-
+        <audio
+          id="beep"
+          src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
+        />
+      </div>      
     </div>
   );
 }
