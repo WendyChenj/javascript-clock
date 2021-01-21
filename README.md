@@ -8,7 +8,7 @@ This project is built using React, HTML & CSS.
 
 Given basic HTML and CSS files, use front end library React to create a javascript clock timer which shows session and break time left and "beep" when time is up.
 
-1. Click the start button will make the timer running. And the timer can be stopped or resumed counting at any time.
+1. Clicking the start button will make the timer running. And the timer can be stopped or resumed counting at any time.
 
 2. When a session/ break countdown reaches to zero, a sound will be played indicating that time is up.
 
